@@ -34,6 +34,10 @@ describe Character do
       expect(subject.alignment).to eq :neutral
     end
 
+    it 'has an armor class of 10' do
+      expect(subject.armor_class).to eq 10
+    end
+
   end
 
 end

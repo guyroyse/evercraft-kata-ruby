@@ -3,10 +3,11 @@ class Character
   ALIGNMENTS = [:good, :neutral, :evil]
 
   attr_accessor :name
-  attr_reader :alignment
+  attr_reader :alignment, :armor_class
 
   def initialize
     @alignment = :neutral
+    @armor_class = 10
   end
 
   def alignment= alignment
