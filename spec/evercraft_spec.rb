@@ -24,6 +24,16 @@ describe Character do
     expect { subject.alignment = :phlegmatic }.to raise_error
   end
 
+  context 'when attacking' do
+
+    let(:defender) { Character.new }
+
+    it 'hits on a roll great than armor class' do
+      expect(subject.attack defender, 15).to be_true
+    end
+
+  end
+
   context 'when created' do
 
     it 'has no name' do

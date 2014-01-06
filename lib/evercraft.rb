@@ -16,4 +16,8 @@ class Character
     @alignment = alignment
   end
 
+  def attack defender, roll
+    true
+  end
+
 end
