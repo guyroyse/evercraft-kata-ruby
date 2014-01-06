@@ -9,4 +9,9 @@ describe Character do
     expect(subject.name).to be_nil
   end
 
+  it 'has an alignment' do
+    subject.alignment = :good
+    expect(subject.alignment).to eq :good
+  end
+
 end

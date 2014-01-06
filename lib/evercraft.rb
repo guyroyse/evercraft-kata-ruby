@@ -1,3 +1,3 @@
 class Character
-  attr_accessor :name
+  attr_accessor :name, :alignment
 end
