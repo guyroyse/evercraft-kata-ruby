@@ -38,6 +38,10 @@ describe Character do
       expect(subject.armor_class).to eq 10
     end
 
+    it 'has 5 hit points"' do
+      expect(subject.hit_points).to eq 5
+    end
+
   end
 
 end
