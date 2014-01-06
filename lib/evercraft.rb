@@ -17,7 +17,7 @@ class Character
   end
 
   def attack defender, roll
-    true
+    roll >= defender.armor_class
   end
 
 end
