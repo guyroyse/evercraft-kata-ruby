@@ -14,4 +14,8 @@ describe Character do
     expect(subject.alignment).to eq :good
   end
 
+  it 'is neutral when created' do
+    expect(subject.alignment).to eq :neutral
+  end
+
 end
