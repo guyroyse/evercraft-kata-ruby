@@ -5,4 +5,8 @@ describe Character do
     expect(subject.name).to eq 'Bob'
   end
 
+  it 'no name when created' do
+    expect(subject.name).to be_nil
+  end
+
 end
