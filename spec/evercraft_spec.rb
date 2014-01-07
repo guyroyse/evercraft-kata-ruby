@@ -5,23 +5,55 @@ describe Character do
     expect(subject.name).to eq 'Bob'
   end
 
-  it 'can be good' do
-    subject.alignment = :good
-    expect(subject.alignment).to eq :good
+  context 'when created' do
+
+    it 'has no name' do
+      expect(subject.name).to be_nil
+    end
+
+    it 'is neutral' do
+      expect(subject.alignment).to eq :neutral
+    end
+
+    it 'has an armor class of 10' do
+      expect(subject.armor_class).to eq 10
+    end
+
+    it 'has 5 hit points"' do
+      expect(subject.hit_points).to eq 5
+    end
+
+    it 'is alive' do
+      expect(subject.alive?).to be_true
+    end
+
+    it "isn't dead" do
+      expect(subject.dead?).to be_false
+    end
+
   end
 
-  it 'can be neutral' do
-    subject.alignment = :neutral
-    expect(subject.alignment).to eq :neutral
-  end
+  context 'when setting alignment' do
 
-  it 'can be evil' do
-    subject.alignment = :evil
-    expect(subject.alignment).to eq :evil
-  end
+    it 'can be good' do
+      subject.alignment = :good
+      expect(subject.alignment).to eq :good
+    end
 
-  it 'cannot be phlegmatic' do
-    expect { subject.alignment = :phlegmatic }.to raise_error
+    it 'can be neutral' do
+      subject.alignment = :neutral
+      expect(subject.alignment).to eq :neutral
+    end
+
+    it 'can be evil' do
+      subject.alignment = :evil
+      expect(subject.alignment).to eq :evil
+    end
+
+    it 'cannot be phlegmatic' do
+      expect { subject.alignment = :phlegmatic }.to raise_error
+    end
+
   end
 
   context 'when attacking' do
@@ -54,78 +86,54 @@ describe Character do
 
   end
 
-  context 'when hit points are positive' do
+  context 'when damaged' do
 
-    before :each do
-      4.times { subject.damage }
+    context 'and hit points are positive' do
+
+      before :each do
+        4.times { subject.damage }
+      end
+
+      it 'is alive' do
+        expect(subject.alive?).to be_true
+      end
+
+      it "isn't dead" do
+        expect(subject.dead?).to be_false
+      end
+
     end
 
-    it 'is alive' do
-      expect(subject.alive?).to be_true
+    context 'and hit points are zero' do
+
+      before :each do
+        5.times { subject.damage }
+      end
+
+      it 'is alive' do
+        expect(subject.alive?).to be_false
+      end
+
+      it "isn't dead" do
+        expect(subject.dead?).to be_true
+      end
+
     end
 
-    it "isn't dead" do
-      expect(subject.dead?).to be_false
-    end
+    context 'and hit points are negative' do
 
-  end
+      before :each do
+        10.times { subject.damage }
+      end
 
-  context 'when hit points are zero' do
+      it 'is alive' do
+        expect(subject.alive?).to be_false
+      end
 
-    before :each do
-      5.times { subject.damage }
-    end
+      it "isn't dead" do
+        expect(subject.dead?).to be_true
+      end
 
-    it 'is alive' do
-      expect(subject.alive?).to be_false
-    end
-
-    it "isn't dead" do
-      expect(subject.dead?).to be_true
-    end
-
-  end
-
-  context 'when hit points are negative' do
-
-    before :each do
-      10.times { subject.damage }
-    end
-
-    it 'is alive' do
-      expect(subject.alive?).to be_false
-    end
-
-    it "isn't dead" do
-      expect(subject.dead?).to be_true
-    end
-
-  end
-
-  context 'when created' do
-
-    it 'has no name' do
-      expect(subject.name).to be_nil
-    end
-
-    it 'is neutral' do
-      expect(subject.alignment).to eq :neutral
-    end
-
-    it 'has an armor class of 10' do
-      expect(subject.armor_class).to eq 10
-    end
-
-    it 'has 5 hit points"' do
-      expect(subject.hit_points).to eq 5
-    end
-
-    it 'is alive' do
-      expect(subject.alive?).to be_true
-    end
-
-    it "isn't dead" do
-      expect(subject.dead?).to be_false
     end
 
   end
