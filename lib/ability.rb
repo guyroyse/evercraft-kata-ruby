@@ -11,6 +11,10 @@ class Ability
     @score = score
   end
 
+  def modifier
+    @score / 2 - 5
+  end
+
   private
 
   def score_in_range score

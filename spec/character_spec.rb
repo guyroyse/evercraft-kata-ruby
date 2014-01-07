@@ -19,7 +19,7 @@ describe Character do
       expect(subject.armor_class).to eq 10
     end
 
-    it 'has 5 hit points"' do
+    it 'has 5 hit points' do
       expect(subject.hit_points).to eq 5
     end
 
@@ -29,6 +29,12 @@ describe Character do
 
     it "isn't dead" do
       expect(subject.dead?).to be_false
+    end
+
+    it 'has expected abilities' do
+      expect(subject.strength).to be_instance_of Ability
+      expect(subject.dexterity).to be_instance_of Ability
+      expect(subject.constitution).to be_instance_of Ability
     end
 
   end

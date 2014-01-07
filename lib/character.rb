@@ -5,7 +5,22 @@ class Character
   attr_accessor :name
   attr_reader :alignment, :armor_class, :hit_points
 
+  def self.ability *abilities
+    @@abilities = abilities
+    abilities.each do |ability|
+      define_method ability do
+        instance_variable_get "@#{ability}".to_sym
+      end
+    end
+  end
+
+  ability :strength, :dexterity, :constitution, :wisdom, :intelligence, :charisma
+  
   def initialize
+
+    @@abilities.each do |ability|
+      instance_variable_set "@#{ability}".to_sym, Ability.new
+    end 
     @alignment = :neutral
     @armor_class = 10
     @hit_points = 5
