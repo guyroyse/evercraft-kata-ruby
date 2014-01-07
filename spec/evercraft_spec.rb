@@ -26,20 +26,19 @@ describe Character do
 
   context 'when attacking' do
 
-    let(:defender) { double('defender') }
+    let :defender do
+      Character.new
+    end
 
     it 'hits on a roll greater than armor class' do
-      defender.stub(:armor_class).and_return(5)
-      expect(subject.attack defender, 10).to be_true
+      expect(subject.attack defender, 15).to be_true
     end
 
     it 'misses on a roll less than armor class' do
-      defender.stub(:armor_class).and_return(15)
-      expect(subject.attack defender, 10).to be_false
+      expect(subject.attack defender, 5).to be_false
     end
 
     it 'hits on a roll equal to armor class' do
-      defender.stub(:armor_class).and_return(10)
       expect(subject.attack defender, 10).to be_true
     end
 
