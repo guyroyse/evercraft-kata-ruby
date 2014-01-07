@@ -38,7 +38,7 @@ describe Character do
       expect(subject.attack defender, 10).to be_false
     end
 
-    it 'hist on a roll equal to armor class' do
+    it 'hits on a roll equal to armor class' do
       defender.stub(:armor_class).and_return(10)
       expect(subject.attack defender, 10).to be_true
     end
