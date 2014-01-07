@@ -42,6 +42,64 @@ describe Character do
       expect(subject.attack defender, 10).to be_true
     end
 
+    it 'does a point of damage when attack hits' do
+      subject.attack defender, 15
+      expect(defender.hit_points).to eq 4
+    end
+
+    it 'does double damage on a roll of 20' do
+      subject.attack defender, 20
+      expect(defender.hit_points).to eq 3
+    end
+
+  end
+
+  context 'when hit points are positive' do
+
+    before :each do
+      4.times { subject.damage }
+    end
+
+    it 'is alive' do
+      expect(subject.alive?).to be_true
+    end
+
+    it "isn't dead" do
+      expect(subject.dead?).to be_false
+    end
+
+  end
+
+  context 'when hit points are zero' do
+
+    before :each do
+      5.times { subject.damage }
+    end
+
+    it 'is alive' do
+      expect(subject.alive?).to be_false
+    end
+
+    it "isn't dead" do
+      expect(subject.dead?).to be_true
+    end
+
+  end
+
+  context 'when hit points are negative' do
+
+    before :each do
+      10.times { subject.damage }
+    end
+
+    it 'is alive' do
+      expect(subject.alive?).to be_false
+    end
+
+    it "isn't dead" do
+      expect(subject.dead?).to be_true
+    end
+
   end
 
   context 'when created' do
@@ -60,6 +118,14 @@ describe Character do
 
     it 'has 5 hit points"' do
       expect(subject.hit_points).to eq 5
+    end
+
+    it 'is alive' do
+      expect(subject.alive?).to be_true
+    end
+
+    it "isn't dead" do
+      expect(subject.dead?).to be_false
     end
 
   end

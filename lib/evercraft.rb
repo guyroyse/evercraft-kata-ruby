@@ -17,7 +17,28 @@ class Character
   end
 
   def attack defender, roll
-    roll >= defender.armor_class
+    hit = roll >= defender.armor_class
+    defender.damage if hit
+    defender.damage if is_critical(roll)
+    hit
   end
 
+  def damage
+    @hit_points -= 1
+  end
+
+  def alive?
+    @hit_points > 0
+  end
+
+  def dead?
+    !alive?
+  end
+
+  private
+  
+  def is_critical roll
+    roll == 20
+  end
+  
 end
