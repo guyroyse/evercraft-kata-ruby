@@ -25,11 +25,11 @@ describe Character do
     end
 
     it 'has an armor class of 10' do
-      expect(subject.armor_class).to eq 10
+      expect(subject.armor_class).to eq DEFAULT_ARMOR_CLASS
     end
 
     it 'has 5 hit points' do
-      expect(subject.hit_points).to eq 5
+      expect(subject.hit_points).to eq DEFAULT_HIT_POINTS
     end
 
     it 'is alive' do
@@ -74,7 +74,7 @@ describe Character do
     context 'and roll is less than armor class' do
 
       before :each do
-        @hit = subject.attack defender, 5
+        @hit = subject.attack defender, MISS_ROLL
       end
 
       it 'misses' do
@@ -82,7 +82,7 @@ describe Character do
       end
 
       it 'does no damage to defender' do
-        expect(defender.hit_points).to eq 5
+        expect(defender.hit_points).to eq DEFAULT_HIT_POINTS
       end
 
     end
@@ -90,7 +90,7 @@ describe Character do
     context 'and roll is greater than armor class' do
 
       before :each do
-        @hit = subject.attack defender, 15
+        @hit = subject.attack defender, HIT_ROLL
       end
 
       it 'hits' do
@@ -98,7 +98,7 @@ describe Character do
       end
 
       it 'does a point of damage to the defender' do
-        expect(defender.hit_points).to eq 4
+        expect(defender.hit_points).to eq DEFAULT_HIT_POINTS - DEFAULT_DAMAGE
       end
 
     end
@@ -106,7 +106,7 @@ describe Character do
     context 'and roll is equal to armor class' do
 
       before :each do
-        @hit = subject.attack defender, 10
+        @hit = subject.attack defender, JUST_HIT_ROLL
       end
 
       it 'hits' do
@@ -114,7 +114,7 @@ describe Character do
       end
 
       it 'does a point of damage to the defender' do
-        expect(defender.hit_points).to eq 4
+        expect(defender.hit_points).to eq DEFAULT_HIT_POINTS - DEFAULT_DAMAGE
       end
 
     end
@@ -122,15 +122,15 @@ describe Character do
     context 'and roll is a natural 20' do
 
       before :each do
-        @hit = subject.attack defender, 20
+        @hit = subject.attack defender, CRITICAL_ROLL
       end
 
       it 'hits' do
         expect(@hit).to be_true
       end
 
-      it 'does double damage on a roll of 20' do
-        expect(defender.hit_points).to eq 3
+      it 'does double damage to the defender' do
+        expect(defender.hit_points).to eq DEFAULT_HIT_POINTS - DEFAULT_DAMAGE * 2
       end
 
     end
@@ -142,14 +142,14 @@ describe Character do
     context 'and hit points are positive' do
 
       before :each do
-        4.times { subject.damage }
+        (DEFAULT_HIT_POINTS - 1).times { subject.damage }
       end
 
       it 'is alive' do
         expect(subject.alive?).to be_true
       end
 
-      it "isn't dead" do
+      it 'is not dead' do
         expect(subject.dead?).to be_false
       end
 
@@ -158,14 +158,14 @@ describe Character do
     context 'and hit points are zero' do
 
       before :each do
-        5.times { subject.damage }
+        DEFAULT_HIT_POINTS.times { subject.damage }
       end
 
-      it 'is alive' do
+      it 'is not alive' do
         expect(subject.alive?).to be_false
       end
 
-      it "isn't dead" do
+      it 'is dead' do
         expect(subject.dead?).to be_true
       end
 
@@ -174,14 +174,14 @@ describe Character do
     context 'and hit points are negative' do
 
       before :each do
-        10.times { subject.damage }
+        (DEFAULT_HIT_POINTS + 1).times { subject.damage }
       end
 
-      it 'is alive' do
+      it 'is not alive' do
         expect(subject.alive?).to be_false
       end
 
-      it "isn't dead" do
+      it 'is dead' do
         expect(subject.dead?).to be_true
       end
 
