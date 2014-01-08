@@ -25,7 +25,7 @@ describe Ability do
     expect { subject.score = 21 }.to raise_error 
   end
 
-  context 'Ability Modifiers' do
+  context 'when calculating modifiers' do
 
     def verify_modifier score, modifier
       subject.score = score
