@@ -40,13 +40,15 @@ describe Character do
   context 'when attacking' do
 
     let :defender do
-      Character.new
+      double('defender')
     end
 
     context 'and roll is less than armor class' do
 
       before :each do
-        @hit = subject.attack defender, MISS_ROLL
+        allow(defender).to receive(:armor_class).and_return DIE_ROLL + 1
+        allow(defender).to receive(:damage)
+        @hit = subject.attack defender, DIE_ROLL
       end
 
       it 'misses' do
@@ -54,7 +56,7 @@ describe Character do
       end
 
       it 'does no damage to defender' do
-        expect(defender.hit_points).to eq DEFAULT_HIT_POINTS
+        expect(defender).to_not have_received(:damage)
       end
 
     end
@@ -62,7 +64,9 @@ describe Character do
     context 'and roll is greater than armor class' do
 
       before :each do
-        @hit = subject.attack defender, HIT_ROLL
+        allow(defender).to receive(:armor_class).and_return DIE_ROLL - 1
+        allow(defender).to receive(:damage)
+        @hit = subject.attack defender, DIE_ROLL
       end
 
       it 'hits' do
@@ -70,7 +74,7 @@ describe Character do
       end
 
       it 'does a point of damage to the defender' do
-        expect(defender.hit_points).to eq DEFAULT_HIT_POINTS - DEFAULT_DAMAGE
+        expect(defender).to have_received(:damage).with(DEFAULT_DAMAGE)
       end
 
     end
@@ -78,7 +82,9 @@ describe Character do
     context 'and roll is equal to armor class' do
 
       before :each do
-        @hit = subject.attack defender, JUST_HIT_ROLL
+        allow(defender).to receive(:armor_class).and_return DIE_ROLL
+        allow(defender).to receive(:damage)
+        @hit = subject.attack defender, DIE_ROLL
       end
 
       it 'hits' do
@@ -86,7 +92,7 @@ describe Character do
       end
 
       it 'does a point of damage to the defender' do
-        expect(defender.hit_points).to eq DEFAULT_HIT_POINTS - DEFAULT_DAMAGE
+        expect(defender).to have_received(:damage).with(DEFAULT_DAMAGE)
       end
 
     end
@@ -94,6 +100,8 @@ describe Character do
     context 'and roll is a natural 20' do
 
       before :each do
+        allow(defender).to receive(:armor_class).and_return DIE_ROLL
+        allow(defender).to receive(:damage)
         @hit = subject.attack defender, CRITICAL_ROLL
       end
 
@@ -102,7 +110,7 @@ describe Character do
       end
 
       it 'does double damage to the defender' do
-        expect(defender.hit_points).to eq DEFAULT_HIT_POINTS - DEFAULT_DAMAGE * 2
+        expect(defender).to have_received(:damage).with(DEFAULT_DAMAGE * 2)
       end
 
     end
