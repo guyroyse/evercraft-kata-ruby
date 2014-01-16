@@ -3,7 +3,7 @@ class Character
   ALIGNMENTS = [:good, :neutral, :evil]
 
   attr_accessor :name
-  attr_reader :alignment, :armor_class, :hit_points
+  attr_reader :alignment, :hit_points
 
   def self.ability *abilities
     @@abilities = abilities
@@ -29,6 +29,10 @@ class Character
   def alignment= alignment
     raise "Invalid alignment" unless ALIGNMENTS.include? alignment
     @alignment = alignment
+  end
+
+  def armor_class
+    10 + dexterity.modifier
   end
 
   def base_damage
