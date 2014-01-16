@@ -14,34 +14,6 @@ describe Character do
     expect(subject.charisma).to be_instance_of Ability
   end
 
-  context 'when created' do
-
-    it 'has no name' do
-      expect(subject.name).to be_nil
-    end
-
-    it 'is neutral' do
-      expect(subject.alignment).to eq :neutral
-    end
-
-    it 'has an armor class of 10' do
-      expect(subject.armor_class).to eq DEFAULT_ARMOR_CLASS
-    end
-
-    it 'has 5 hit points' do
-      expect(subject.hit_points).to eq DEFAULT_HIT_POINTS
-    end
-
-    it 'is alive' do
-      expect(subject.alive?).to be_true
-    end
-
-    it 'is not dead' do
-      expect(subject.dead?).to be_false
-    end
-
-  end
-
   context 'when setting alignment' do
 
     it 'can be good' do
@@ -131,58 +103,6 @@ describe Character do
 
       it 'does double damage to the defender' do
         expect(defender.hit_points).to eq DEFAULT_HIT_POINTS - DEFAULT_DAMAGE * 2
-      end
-
-    end
-
-  end
-
-  context 'when damaged' do
-
-    context 'and hit points are positive' do
-
-      before :each do
-        subject.damage DEFAULT_HIT_POINTS - 1
-      end
-
-      it 'is alive' do
-        expect(subject.alive?).to be_true
-      end
-
-      it 'is not dead' do
-        expect(subject.dead?).to be_false
-      end
-
-    end
-
-    context 'and hit points are zero' do
-
-      before :each do
-        subject.damage DEFAULT_HIT_POINTS
-      end
-
-      it 'is not alive' do
-        expect(subject.alive?).to be_false
-      end
-
-      it 'is dead' do
-        expect(subject.dead?).to be_true
-      end
-
-    end
-
-    context 'and hit points are negative' do
-
-      before :each do
-        subject.damage DEFAULT_HIT_POINTS + 1
-      end
-
-      it 'is not alive' do
-        expect(subject.alive?).to be_false
-      end
-
-      it 'is dead' do
-        expect(subject.dead?).to be_true
       end
 
     end
