@@ -3,7 +3,7 @@ class Character
   ALIGNMENTS = [:good, :neutral, :evil]
 
   attr_accessor :name
-  attr_reader :alignment, :hit_points
+  attr_reader :alignment
 
   def self.ability *abilities
     @@abilities = abilities
@@ -23,7 +23,7 @@ class Character
     end 
     @alignment = :neutral
     @armor_class = 10
-    @hit_points = 5
+    @damage = 0
   end
 
   def alignment= alignment
@@ -35,37 +35,45 @@ class Character
     10 + dexterity.modifier
   end
 
-  def base_damage
-    1 + strength.modifier
+  def hit_points
+    5 + constitution.modifier
   end
 
-  def attack defender, roll
-    hit = roll + strength.modifier >= defender.armor_class
-    defender.damage attack_damage(roll) if hit
-    hit
-  end
-
-  def damage points
-    @hit_points -= points
+  def current_hit_points
+    hit_points - @damage
   end
 
   def alive?
-    @hit_points > 0
+    current_hit_points > 0
   end
 
   def dead?
     !alive?
   end
 
+  def attack defender, roll
+    hit = roll + strength.modifier >= defender.armor_class
+    defender.damage calculate_damage(roll) if hit
+    hit
+  end
+
+  def damage points
+    @damage += points
+  end
+
   private
 
-  def attack_damage roll
+  def calculate_damage roll
     total_damage = 0
-    total_damage = base_damage
-    total_damage += base_damage if is_critical(roll)
+    total_damage = attack_damage
+    total_damage += attack_damage if is_critical(roll)
     [1, total_damage].max
   end
   
+  def attack_damage
+    1 + strength.modifier
+  end
+
   def is_critical roll
     roll == 20
   end

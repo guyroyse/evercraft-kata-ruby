@@ -10,4 +10,3 @@ describe Character, 'when slow' do
 
 end
 
-

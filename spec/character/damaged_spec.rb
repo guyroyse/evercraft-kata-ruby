@@ -1,9 +1,13 @@
 describe Character, 'when damaged' do
 
-  context 'and hit points are positive' do
+  context 'with less points than it has' do
 
     before :each do
       subject.damage DEFAULT_HIT_POINTS - 1
+    end
+
+    it 'has positive current hit points' do
+      expect(subject.current_hit_points).to eq 1
     end
 
     it 'is alive' do
@@ -16,10 +20,14 @@ describe Character, 'when damaged' do
 
   end
 
-  context 'and hit points are zero' do
+  context 'with as many hit points as it has' do
 
     before :each do
       subject.damage DEFAULT_HIT_POINTS
+    end
+
+    it 'has no current hit points' do
+      expect(subject.current_hit_points).to eq 0
     end
 
     it 'is not alive' do
@@ -32,10 +40,14 @@ describe Character, 'when damaged' do
 
   end
 
-  context 'and hit points are negative' do
+  context 'with more hit points than it has' do
 
     before :each do
       subject.damage DEFAULT_HIT_POINTS + 1
+    end
+
+    it 'has negative current hit points' do
+      expect(subject.current_hit_points).to eq -1
     end
 
     it 'is not alive' do
