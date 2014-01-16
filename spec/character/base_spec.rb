@@ -43,11 +43,14 @@ describe Character do
       double('defender')
     end
 
+    before :each do
+      allow(defender).to receive(:damage)
+    end
+
     context 'and roll is less than armor class' do
 
       before :each do
         allow(defender).to receive(:armor_class).and_return DIE_ROLL + 1
-        allow(defender).to receive(:damage)
         @hit = subject.attack defender, DIE_ROLL
       end
 
@@ -65,7 +68,6 @@ describe Character do
 
       before :each do
         allow(defender).to receive(:armor_class).and_return DIE_ROLL - 1
-        allow(defender).to receive(:damage)
         @hit = subject.attack defender, DIE_ROLL
       end
 
@@ -83,7 +85,6 @@ describe Character do
 
       before :each do
         allow(defender).to receive(:armor_class).and_return DIE_ROLL
-        allow(defender).to receive(:damage)
         @hit = subject.attack defender, DIE_ROLL
       end
 
@@ -101,7 +102,6 @@ describe Character do
 
       before :each do
         allow(defender).to receive(:armor_class).and_return DIE_ROLL
-        allow(defender).to receive(:damage)
         @hit = subject.attack defender, CRITICAL_ROLL
       end
 
@@ -126,7 +126,7 @@ describe Character do
     context 'and attacking' do
 
       let :defender do
-        defender = double('defender')
+        double('defender')
       end
 
       before :each do
@@ -175,18 +175,24 @@ describe Character do
     context 'and attacking' do
 
       let :defender do
-        Character.new
+        double('defender')
+      end
+
+      before :each do
+        allow(defender).to receive(:armor_class).and_return DIE_ROLL
+        allow(defender).to receive(:damage)
       end
 
       it 'misses on a just hit roll' do
-        hit = subject.attack defender, JUST_HIT_ROLL
+        hit = subject.attack defender, DIE_ROLL
         expect(hit).to be_false
       end
 
       context 'and hitting' do
 
         before :each do
-          @hit = subject.attack defender, JUST_HIT_ROLL + 1
+          allow(defender).to receive(:armor_class).and_return DIE_ROLL - 1
+          @hit = subject.attack defender, DIE_ROLL
         end
 
         it 'adds strength modifier to hit rolls' do
@@ -194,7 +200,7 @@ describe Character do
         end
 
         it 'does at least one point of damange' do
-          expect(defender.hit_points).to eq 4
+          expect(defender).to have_received(:damage).with MINIMUM_DAMAGE
         end
 
       end
@@ -206,7 +212,7 @@ describe Character do
         end
 
         it 'does at least one point of damage' do
-          expect(defender.hit_points).to eq 4
+          expect(defender).to have_received(:damage).with MINIMUM_DAMAGE
         end
 
       end
