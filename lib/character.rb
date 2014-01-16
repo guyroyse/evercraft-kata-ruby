@@ -57,8 +57,12 @@ class Character
     !alive?
   end
 
+  def attack_modifier
+    strength.modifier + level / 2
+  end
+
   def attack defender, roll
-    hit = roll + strength.modifier >= defender.armor_class
+    hit = roll + attack_modifier >= defender.armor_class
     if hit
       defender.damage calculate_damage(roll)
       @experience_points += 10

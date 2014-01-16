@@ -9,6 +9,18 @@ describe Character, 'when leveled' do
     allow(defender).to receive(:damage)
   end
 
+  context 'when second level' do
+
+    before :each do
+      100.times { subject.attack defender, DIE_ROLL } 
+    end
+
+    it 'receives a +1 to attack' do
+      expect(subject.attack_modifier).to eq 1
+    end
+
+  end
+
   context 'when third level' do
 
     before :each do
@@ -32,6 +44,22 @@ describe Character, 'when leveled' do
     it 'receives at least one hit point per level' do
       subject.constitution.score = 1
       expect(subject.hit_points).to eq 3
+    end
+
+    it 'receives a +1 to attack' do
+      expect(subject.attack_modifier).to eq 1
+    end
+
+  end
+
+  context 'when fourth level' do
+
+    before :each do
+      300.times { subject.attack defender, DIE_ROLL } 
+    end
+
+    it 'receives a +1 to attack' do
+      expect(subject.attack_modifier).to eq 2
     end
 
   end

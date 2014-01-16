@@ -32,5 +32,9 @@ describe Character, 'when created' do
     expect(subject.level).to eq 1
   end
 
+  it 'has an attack modifier of 0' do
+    expect(subject.attack_modifier).to eq 0
+  end
+
 end
 

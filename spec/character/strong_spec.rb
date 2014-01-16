@@ -4,6 +4,10 @@ describe Character, 'when strong' do
     subject.strength.score = 12
   end
 
+  it 'adds strength modifier to attack modifier' do
+    expect(subject.attack_modifier).to eq 1
+  end
+
   context 'and attacking' do
 
     let :defender do

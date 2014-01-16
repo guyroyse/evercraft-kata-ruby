@@ -101,5 +101,11 @@ describe Character, 'when attacking' do
 
   end
 
+  it 'applies attack modifier to attack rolls' do
+    allow(defender).to receive(:armor_class).and_return DIE_ROLL - 5
+    expect(subject).to receive(:attack_modifier) { 5 }
+    subject.attack defender, DIE_ROLL
+  end
+
 end
 
