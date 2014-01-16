@@ -3,7 +3,7 @@ class Character
   ALIGNMENTS = [:good, :neutral, :evil]
 
   attr_accessor :name
-  attr_reader :alignment
+  attr_reader :alignment, :experience_points
 
   def self.ability *abilities
     @@abilities = abilities
@@ -21,14 +21,20 @@ class Character
     @@abilities.each do |ability|
       instance_variable_set "@#{ability}".to_sym, Ability.new
     end 
+
     @alignment = :neutral
-    @armor_class = 10
+    @experience_points = 0
     @damage = 0
+
   end
 
   def alignment= alignment
     raise "Invalid alignment" unless ALIGNMENTS.include? alignment
     @alignment = alignment
+  end
+
+  def level
+    @experience_points / 1000 + 1
   end
 
   def armor_class
@@ -53,7 +59,10 @@ class Character
 
   def attack defender, roll
     hit = roll + strength.modifier >= defender.armor_class
-    defender.damage calculate_damage(roll) if hit
+    if hit
+      defender.damage calculate_damage(roll)
+      @experience_points += 10
+    end
     hit
   end
 

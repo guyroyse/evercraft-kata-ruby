@@ -24,5 +24,13 @@ describe Character, 'when created' do
     expect(subject.dead?).to be_false
   end
 
+  it 'has no experience' do
+    expect(subject.experience_points).to eq 0
+  end
+
+  it 'is first level' do
+    expect(subject.level).to eq 1
+  end
+
 end
 

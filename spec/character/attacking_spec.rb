@@ -76,5 +76,30 @@ describe Character, 'when attacking' do
 
   end
 
+  context 'and hitting' do
+
+    before :each do
+      allow(defender).to receive(:armor_class).and_return DIE_ROLL
+      subject.attack defender, DIE_ROLL
+    end
+
+    it 'gains 10 experience points' do
+      expect(subject.experience_points).to eq 10
+    end
+
+    context 'and attacking and hitting again' do
+
+      before :each do
+        subject.attack defender, DIE_ROLL
+      end
+
+      it 'gains 10 more experience points' do
+        expect(subject.experience_points).to eq 20
+      end
+
+    end
+
+  end
+
 end
 
