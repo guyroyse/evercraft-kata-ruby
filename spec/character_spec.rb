@@ -142,7 +142,7 @@ describe Character do
     context 'and hit points are positive' do
 
       before :each do
-        (DEFAULT_HIT_POINTS - 1).times { subject.damage }
+        subject.damage DEFAULT_HIT_POINTS - 1
       end
 
       it 'is alive' do
@@ -158,7 +158,7 @@ describe Character do
     context 'and hit points are zero' do
 
       before :each do
-        DEFAULT_HIT_POINTS.times { subject.damage }
+        subject.damage DEFAULT_HIT_POINTS
       end
 
       it 'is not alive' do
@@ -174,7 +174,7 @@ describe Character do
     context 'and hit points are negative' do
 
       before :each do
-        (DEFAULT_HIT_POINTS + 1).times { subject.damage }
+        subject.damage DEFAULT_HIT_POINTS + 1
       end
 
       it 'is not alive' do
@@ -183,6 +183,99 @@ describe Character do
 
       it 'is dead' do
         expect(subject.dead?).to be_true
+      end
+
+    end
+
+  end
+
+  context 'when strong' do
+
+    before :each do
+      subject.strength.score = 12
+    end
+
+    context 'and attacking' do
+
+      let :defender do
+        Character.new
+      end
+
+      context 'and hitting' do
+
+        before :each do
+          @hit = subject.attack defender, JUST_HIT_ROLL - 1
+        end
+
+        it 'adds strength modifier to attack rolls' do
+          expect(@hit).to be_true
+        end
+
+        it 'adds strength modifier to damage' do
+          expect(defender.hit_points).to eq 3
+        end
+
+      end
+
+      context 'and hitting critically' do
+
+        before :each do
+          subject.attack defender, CRITICAL_ROLL
+        end
+
+        it 'adds double strength modifier on a critical hit' do
+          expect(defender.hit_points).to eq 1
+        end
+
+      end
+
+    end
+
+  end
+
+  context 'when weak' do
+
+    before :each do
+      subject.strength.score = 8
+    end
+
+    context 'and attacking' do
+
+      let :defender do
+        Character.new
+      end
+
+      it 'misses on a just hit roll' do
+        hit = subject.attack defender, JUST_HIT_ROLL
+        expect(hit).to be_false
+      end
+
+      context 'and hitting' do
+
+        before :each do
+          @hit = subject.attack defender, JUST_HIT_ROLL + 1
+        end
+
+        it 'adds strength modifier to hit rolls' do
+          expect(@hit).to be_true
+        end
+
+        it 'does at least one point of damange' do
+          expect(defender.hit_points).to eq 4
+        end
+
+      end
+
+      context 'and hitting critically' do
+
+        before :each do
+          subject.attack defender, CRITICAL_ROLL
+        end
+
+        it 'does at least one point of damage' do
+          expect(defender.hit_points).to eq 4
+        end
+
       end
 
     end

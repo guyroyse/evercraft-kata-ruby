@@ -31,15 +31,18 @@ class Character
     @alignment = alignment
   end
 
+  def base_damage
+    1 + strength.modifier
+  end
+
   def attack defender, roll
-    hit = roll >= defender.armor_class
-    defender.damage if hit
-    defender.damage if is_critical(roll)
+    hit = roll + strength.modifier >= defender.armor_class
+    defender.damage attack_damage(roll) if hit
     hit
   end
 
-  def damage
-    @hit_points -= 1
+  def damage points
+    @hit_points -= points
   end
 
   def alive?
@@ -51,6 +54,13 @@ class Character
   end
 
   private
+
+  def attack_damage roll
+    total_damage = 0
+    total_damage = base_damage
+    total_damage += base_damage if is_critical(roll)
+    [1, total_damage].max
+  end
   
   def is_critical roll
     roll == 20
