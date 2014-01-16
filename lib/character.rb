@@ -42,7 +42,7 @@ class Character
   end
 
   def hit_points
-    5 + constitution.modifier
+    hit_points_per_level * level
   end
 
   def current_hit_points
@@ -71,6 +71,10 @@ class Character
   end
 
   private
+
+  def hit_points_per_level
+    [5 + constitution.modifier, 1].max
+  end
 
   def calculate_damage roll
     total_damage = 0
