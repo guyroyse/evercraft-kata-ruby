@@ -74,7 +74,7 @@ describe Character do
       end
 
       it 'does a point of damage to the defender' do
-        expect(defender).to have_received(:damage).with(DEFAULT_DAMAGE)
+        expect(defender).to have_received(:damage).with DEFAULT_DAMAGE
       end
 
     end
@@ -92,7 +92,7 @@ describe Character do
       end
 
       it 'does a point of damage to the defender' do
-        expect(defender).to have_received(:damage).with(DEFAULT_DAMAGE)
+        expect(defender).to have_received(:damage).with DEFAULT_DAMAGE
       end
 
     end
@@ -110,7 +110,7 @@ describe Character do
       end
 
       it 'does double damage to the defender' do
-        expect(defender).to have_received(:damage).with(DEFAULT_DAMAGE * 2)
+        expect(defender).to have_received(:damage).with DEFAULT_DAMAGE * 2
       end
 
     end
@@ -126,13 +126,18 @@ describe Character do
     context 'and attacking' do
 
       let :defender do
-        Character.new
+        defender = double('defender')
+      end
+
+      before :each do
+        allow(defender).to receive(:armor_class).and_return DIE_ROLL + 1
+        allow(defender).to receive(:damage)
       end
 
       context 'and hitting' do
 
         before :each do
-          @hit = subject.attack defender, JUST_HIT_ROLL - 1
+          @hit = subject.attack defender, DIE_ROLL
         end
 
         it 'adds strength modifier to attack rolls' do
@@ -140,7 +145,7 @@ describe Character do
         end
 
         it 'adds strength modifier to damage' do
-          expect(defender.hit_points).to eq 3
+          expect(defender).to have_received(:damage).with STRONG_DAMAGE
         end
 
       end
@@ -152,7 +157,7 @@ describe Character do
         end
 
         it 'adds double strength modifier on a critical hit' do
-          expect(defender.hit_points).to eq 1
+          expect(defender).to have_received(:damage).with STRONG_DAMAGE * 2
         end
 
       end
